@@ -1,0 +1,41 @@
+{
+  "fields": [
+    {
+      "name": "object_id",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "version",
+      "type": "INTEGER"
+    },
+    {
+      "name": "transaction_digest",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "checkpoint",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "epoch",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "timestamp_ms",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "input_kind",
+      "type": "STRING"
+    },
+    {
+      "name": "object_status",
+      "type": "STRING"
+    }
+  ]
+}

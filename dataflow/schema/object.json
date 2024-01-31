@@ -1,0 +1,94 @@
+{
+  "fields": [
+    {
+      "name": "object_id",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "version",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "digest",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "type_",
+      "type": "STRING"
+    },
+    {
+      "name": "checkpoint",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "epoch",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "timestamp_ms",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "owner_type",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "owner_address",
+      "type": "STRING"
+    },
+    {
+      "name": "object_status",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "initial_shared_version",
+      "type": "INTEGER"
+    },
+    {
+      "name": "previous_transaction",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "has_public_transfer",
+      "type": "BOOLEAN",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "storage_rebate",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "bcs",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "coin_type",
+      "type": "STRING"
+    },
+    {
+      "name": "coin_balance",
+      "type": "NUMERIC",
+      "precision": "20"
+    },
+    {
+      "name": "struct_tag",
+      "type": "STRING"
+    },
+    {
+      "name": "object_json",
+      "type": "JSON"
+    }
+  ]
+}

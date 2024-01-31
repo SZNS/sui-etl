@@ -1,0 +1,58 @@
+{
+  "fields": [
+    {
+      "name": "transaction_digest",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "event_index",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "checkpoint",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "epoch",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "timestamp_ms",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "sender",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "package",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "module",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "event_type",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "bcs",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "event_json",
+      "type": "JSON"
+    }
+  ]
+}

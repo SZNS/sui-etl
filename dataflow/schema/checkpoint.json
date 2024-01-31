@@ -1,0 +1,98 @@
+{
+  "fields": [
+    {
+      "name": "checkpoint_digest",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "sequence_number",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "epoch",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "timestamp_ms",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "previous_checkpoint_digest",
+      "type": "STRING"
+    },
+    {
+      "name": "end_of_epoch",
+      "type": "BOOLEAN",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "total_gas_cost",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "computation_cost",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "storage_cost",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "storage_rebate",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "non_refundable_storage_fee",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "total_transaction_blocks",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "total_transactions",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "total_successful_transaction_blocks",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "total_successful_transactions",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "network_total_transaction",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "validator_signature",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    }
+  ]
+}

@@ -1,0 +1,206 @@
+{
+  "fields": [
+    {
+      "name": "transaction_digest",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "checkpoint",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "epoch",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "timestamp_ms",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "sender",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "transaction_kind",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "is_system_txn",
+      "type": "BOOLEAN",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "is_sponsored_tx",
+      "type": "BOOLEAN",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "transaction_count",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "execution_success",
+      "type": "BOOLEAN",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "input",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "shared_input",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "gas_coins",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "created",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "mutated",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "deleted",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "transfers",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "split_coins",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "merge_coins",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "publish",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "upgrade",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "others",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "move_calls",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "packages",
+      "type": "STRING"
+    },
+    {
+      "name": "gas_owner",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "gas_object_id",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "gas_object_sequence",
+      "type": "INTEGER",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "gas_object_digest",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "gas_budget",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "total_gas_cost",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "computation_cost",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "storage_cost",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "storage_rebate",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "non_refundable_storage_fee",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "gas_price",
+      "type": "NUMERIC",
+      "mode": "REQUIRED",
+      "precision": "20"
+    },
+    {
+      "name": "raw_transaction",
+      "type": "STRING",
+      "mode": "REQUIRED"
+    },
+    {
+      "name": "has_zklogin_sig",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "has_upgraded_multisig",
+      "type": "BOOLEAN"
+    },
+    {
+      "name": "transaction_json",
+      "type": "JSON"
+    },
+    {
+      "name": "effects_json",
+      "type": "JSON"
+    }
+  ]
+}
