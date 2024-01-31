@@ -1,0 +1,14 @@
+# Python virtual env
+env/
+
+# Env vars
+.env
+
+.python-version
+
+# Standalone items
+logs
+airflow.cfg
+airflow.db
+standalone_admin_password.txt
+webserver_config.py
