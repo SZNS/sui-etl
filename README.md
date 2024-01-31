@@ -2,7 +2,7 @@
 
 Sui ETL uses the [sui-analytics-indexer](https://github.com/MystenLabs/sui/tree/main/crates/sui-analytics-indexer/src) to push Sui blockchain data real-time into the BigQuery public dataset for users to query Sui data.
 
-![sui-etl-architecture.png](/assets/sui_etl_architecture.png)
+![sui-etl-architecture.png](assets/sui-etl-architecture.png)
 
 1. Sui Full Node and Analytics Indexer are deployed. Refer to the below for more details:
     1. Deploying Full Node and Indexer on GCP: https://github.com/SZNS/sui-node
