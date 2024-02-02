@@ -56,8 +56,6 @@ python SuiAnalytics.py --region=[REGION] --type=[TYPE] \
 | PROJECT_ID | The GCP project ID |  |
 | GCS_TEMP_DIR | A Cloud Storage path for Dataflow to stage temporary job files created during the execution of the pipeline |  |
 | DISK_SIZE | The disk size for Dataflow workers | 20, since machines are not utilizing persistent disk space |
-| MACHINE_TYPE | The https://cloud.google.com/compute/docs/machine-resource for Dataflow workers | For type object = n2-highcpu-16
-
-For other types = n1-standard-4 |
+| MACHINE_TYPE | The https://cloud.google.com/compute/docs/machine-resource for Dataflow workers | For type object = n2-highcpu-16 <p> For other types = n1-standard-4 |
 | MAX_WORKERS | The maximum workers to scale up for a Dataflow pipeline | 10, it tends to be costly and takes time to spin up/down workers. We suggest updating MACHINE_TYPE if the current latency is undesirable |
 | JOB_NAME | A uniquer job name for the Dataflow pipeline |  |
