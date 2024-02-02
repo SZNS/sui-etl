@@ -14,7 +14,7 @@ The steps below create a BigQuery dataset and tables according to the schema def
 2. Create the tables
     1. In the GCP UI go to BigQuery and open a query tab
         
-        ![Untitled](https://prod-files-secure.s3.us-west-2.amazonaws.com/0a43eda3-718b-4a0c-bb46-015b10c65c2d/66df5f2a-fbe4-4148-a3b6-ec943506c0e1/Untitled.png)
+        ![bigquerymd-1.png](/assets/reference/bigquerymd-1.png)
         
     2. Copy the SQL queries provided above to create a table. Update the dataset name and tables name as needed.
         1. There should be seven tables created:
