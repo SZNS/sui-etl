@@ -16,7 +16,7 @@ Please follow [these instructions](https://cloud.google.com/composer/docs/compos
 
 1. In the newly created Composer environment click the “Environment Variables” tab → Click Edit
     
-    ![cloudcomposermd-1.png](assets/reference/cloudcomposermd-1.png)
+    ![cloudcomposermd-1.png](/assets/reference/cloudcomposermd-1.png)
     
 2. Add the following variables
     
@@ -26,14 +26,14 @@ Please follow [these instructions](https://cloud.google.com/composer/docs/compos
     | AIRFLOW_VAR_PROJECT_ID | The project ID where the BigQuery data is saved |
     | AIRFLOW_VAR_DATASET_NAME | The table name where the BigQuery data is saved |
     
-    ![cloudcomposermd-2.png](assets/reference/cloudcomposermd-2.png)
+    ![cloudcomposermd-2.png](/assets/reference/cloudcomposermd-2.png)
     
 
 ## Deploy Airflow
 
 1. In the Composer Environment click the “OPEN DAGS FOLDER” link
     
-    ![cloudcomposermd-3.png](assets/reference/cloudcomposermd-3.png)
+    ![cloudcomposermd-3.png](/assets/reference/cloudcomposermd-3.png)
     
 2. Click “UPLOAD FILES”
 3. Upload all files in this repository under the `dags` directory into this GCS folder
