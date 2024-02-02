@@ -4,9 +4,11 @@ from airflow.models import Variable
 
 def read_dag_vars(**kwargs):
     vars = {
-        'project_id': read_var('project_id', False, **kwargs),
-        'dataset_name': read_var('dataset_name', False, **kwargs),
-        'notification_emails': read_var('notification_emails', False, **kwargs)
+        'project_id': read_var('project_id', True, **kwargs),
+        'dataset_name': read_var('dataset_name', True, **kwargs),
+        'bucket_id': read_var('bucket_id', True, **kwargs),
+        'notification_emails': read_var('notification_emails', False, **kwargs),
+        'skip_load': read_var('skip_load', False, **kwargs)
     }
     
     return vars
