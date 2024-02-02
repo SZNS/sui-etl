@@ -24,7 +24,7 @@ default_args = {
     "retries": 2,
     "retry_delay": timedelta(minutes=5),
     "start_date": datetime(year=2023, month=4, day=12, hour=14),
-    "end_date": datetime(year=2023, month=7, day=23, hour=14)
+    # "end_date": datetime(year=2024, month=7, day=23, hour=14) # Set this to load to a particular day/epoch
 }
 
 
