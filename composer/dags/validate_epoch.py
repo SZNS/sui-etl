@@ -75,15 +75,17 @@ with models.DAG(
     def create_load_task(type, table_name):
         # since ti.xcom_ not avaiable in this context
         epoch = Variable.get("epoch_run_index", default_var=0)
-        bucket_id = Variable.get("bucket_id")
+        source_bucket_id = Variable.get("source_bucket_id")
         skip_load = Variable.get("skip_load")
 
 
         def load_task():
-            if not skip_load:
-                dataset_name = Variable.get("dataset_name")
+            target_project_id = Variable.get("target_project_id", default_var=0)
 
-                client = bigquery.Client()
+            if not skip_load:
+                target_dataset_name = Variable.get("target_dataset_name")
+
+                client = bigquery.Client(project=target_project_id)
                 job_config = bigquery.LoadJobConfig()
                 job_config.source_format = bigquery.SourceFormat.CSV
                 job_config.field_delimiter = "|"
@@ -91,11 +93,11 @@ with models.DAG(
                 job_config.allow_quoted_newlines = True
 
                 data_location_uri = 'gs://{bucket}/{type}/epoch_{epoch}'.format(
-                    bucket=bucket_id, type=type, epoch=epoch)
+                    bucket=source_bucket_id, type=type, epoch=epoch)
                 uri = '{data_location_uri}/*.csv'.format(
                     data_location_uri=data_location_uri)
 
-                table_ref = client.dataset(dataset_name).table(table_name)
+                table_ref = client.dataset(target_dataset_name).table(table_name)
                 load_job = client.load_table_from_uri(
                     uri, table_ref, job_config=job_config)
 
