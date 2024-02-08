@@ -82,7 +82,7 @@ with models.DAG(
             target_project_id = Variable.get("target_project_id", default_var=0)
 
             # Since Airflow vars are stored as strings
-            skip_load = Variable.get("skip_load").lower() == "True"
+            skip_load = Variable.get("skip_load").lower() == "true"
             if not skip_load:
                 target_dataset_name = Variable.get("target_dataset_name")
 
