@@ -76,12 +76,13 @@ with models.DAG(
         # since ti.xcom_ not avaiable in this context
         epoch = Variable.get("epoch_run_index", default_var=0)
         source_bucket_id = Variable.get("source_bucket_id")
-        skip_load = Variable.get("skip_load")
 
 
         def load_task():
             target_project_id = Variable.get("target_project_id", default_var=0)
 
+            # Since Airflow vars are stored as strings
+            skip_load = Variable.get("skip_load").lower() == "True"
             if not skip_load:
                 target_dataset_name = Variable.get("target_dataset_name")
 
