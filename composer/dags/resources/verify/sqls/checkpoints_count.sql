@@ -1,8 +1,8 @@
 select if(
 (
-  SELECT MAX(sequence_number) as highest_checkpoint,  FROM `{{params.target_project_id}}.{{params.target_dataset_name}}.CHECKPOINT` LIMIT 1
+  SELECT (MAX(sequence_number) - MIN(sequence_number)) as highest_checkpoint,  FROM `{{params.target_project_id}}.{{params.target_dataset_name}}.CHECKPOINT` where epoch = {{ti.xcom_pull(key="epoch", task_ids="current_epoch")}}
 
 ) + 1 =
 (
-SELECT row_count FROM `{{params.target_project_id}}.{{params.target_dataset_name}}.__TABLES__` where table_id ="CHECKPOINT"
+SELECT count(*) FROM `{{params.target_project_id}}.{{params.target_dataset_name}}.CHECKPOINT` where epoch = {{ti.xcom_pull(key="epoch", task_ids="current_epoch")}}
 ), 1, 0)
