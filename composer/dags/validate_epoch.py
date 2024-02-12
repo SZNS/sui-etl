@@ -1,18 +1,20 @@
+import logging
+
 from airflow.models import Variable
 from airflow import models
 from google.cloud import bigquery
 from airflow.providers.google.cloud.operators.bigquery import BigQueryValueCheckOperator
+from sensors.EpochSensor import EpochSensor
 from utils.variables import read_dag_vars
 from utils.utils import get_sql_query
 from airflow.operators.python import PythonOperator
 
+
 from datetime import datetime, timedelta
 import json
 
-import logging
 logging.basicConfig()
 logging.getLogger().setLevel(logging.DEBUG)
-
 
 default_args = {
     "owner": "Composer Example",
@@ -24,13 +26,13 @@ default_args = {
     "retries": 2,
     "retry_delay": timedelta(minutes=5),
     "start_date": datetime(year=2023, month=4, day=12, hour=14),
-    # "end_date": datetime(year=2024, month=7, day=23, hour=14) # Set this to load to a particular day/epoch
+    # Set this to load to a particular day/epoch
+    "end_date": datetime(year=2024, month=2, day=8, hour=14)
 }
 
 
 EPOCH_KEY = "epoch"
-
-# Retreive the current epoch as a airflow variable
+# Retreive the current epoch as a airflow variable and set in xcom for other tasks to pull
 def current_epoch(ti):
     cur_epoch = Variable.get("epoch_run_index", default_var=0)
 
@@ -40,12 +42,12 @@ def current_epoch(ti):
 
 # Update the epoch as a airflow variable for the next DAG run
 def update_epoch(ti):
-    epoch = ti.xcom_pull(key=EPOCH_KEY, task_ids="current_epoch")
+    epoch = ti.xcom_pull(key=EPOCH_KEY, task_ids="prepare")
 
     next_epoch = int(epoch) + 1
 
     logging.info(
-        "Finished validations. Setting new epoch to: {epoch}".format(epoch=next_epoch))
+        "Finished validations. Setting next epoch to: {epoch}".format(epoch=next_epoch))
 
     Variable.set("epoch_run_index", next_epoch)
 
@@ -56,10 +58,29 @@ with models.DAG(
     params=read_dag_vars(),
     max_active_runs=1,
 ) as dag:
+    
+    check_epoch_task = EpochSensor(
+        task_id='check_epoch',
+        http_conn_id='sui_mainnet_api',
+        # endpoint is blank since this is JSON RPC
+        endpoint='/',
+        request_params={
+            "jsonrpc": "2.0",
+            "id": 1,
+            "method": "suix_getLatestSuiSystemState",
+            "params": []
+        },
+        headers={"Content-Type": "application/json"},
+        # Since epochs aren't exactly 24 hours as we've seen drifts over time
+        poke_interval=timedelta(minutes=30).total_seconds(), 
+        # Just in case there is significant drift so try for ~12 hours
+        timeout=timedelta(hours=12).total_seconds(),
+        dag=dag,
+    )
 
     # Retrieve current epoch
-    current_epoch_task = PythonOperator(
-        task_id="current_epoch", python_callable=current_epoch,
+    prepare_task = PythonOperator(
+        task_id="prepare", python_callable=current_epoch,
         dag=dag
     )
 
@@ -77,9 +98,9 @@ with models.DAG(
         epoch = Variable.get("epoch_run_index", default_var=0)
         source_bucket_id = Variable.get("source_bucket_id")
 
-
         def load_task():
-            target_project_id = Variable.get("target_project_id", default_var=0)
+            target_project_id = Variable.get(
+                "target_project_id", default_var=0)
 
             # Since Airflow vars are stored as strings
             skip_load = Variable.get("skip_load").lower() == "true"
@@ -98,13 +119,14 @@ with models.DAG(
                 uri = '{data_location_uri}/*.csv'.format(
                     data_location_uri=data_location_uri)
 
-                table_ref = client.dataset(target_dataset_name).table(table_name)
+                table_ref = client.dataset(
+                    target_dataset_name).table(table_name)
                 load_job = client.load_table_from_uri(
                     uri, table_ref, job_config=job_config)
 
                 try:
                     logging.info('Creating a job: ' +
-                                json.dumps(job_config.to_api_repr()))
+                                 json.dumps(job_config.to_api_repr()))
                     result = load_job.result()
                     logging.info(result)
                     assert load_job.errors is None or len(load_job.errors) == 0
@@ -114,7 +136,8 @@ with models.DAG(
 
                 assert load_job.state == 'DONE'
             else:
-                logging.info('Skip load flag set to TRUE. Skipping load of {type}'.format(type=type))
+                logging.info(
+                    'Skip load flag set to TRUE. Skipping load of {type}'.format(type=type))
 
         load_operator = PythonOperator(
             task_id='load_{type}'.format(type=type, epoch=epoch),
@@ -153,8 +176,8 @@ with models.DAG(
     )
 
     # Finalize and update epoch for next run
-    update_epoch_task = PythonOperator(
-        task_id="update_epoch", python_callable=update_epoch
+    cleanup_task = PythonOperator(
+        task_id="cleanup", python_callable=update_epoch
     )
 
     load_tasks = [create_load_task("checkpoints", "CHECKPOINT"),
@@ -166,8 +189,8 @@ with models.DAG(
                   create_load_task("transaction_objects", "TRANSACTION_OBJECT")
                   ]
 
-    current_epoch_task >> load_tasks >> has_checkpoints_task >> [
-        checkpoints_count_task, 
-        move_calls_task, 
+    check_epoch_task >> prepare_task >> load_tasks >> has_checkpoints_task >> [
+        checkpoints_count_task,
+        move_calls_task,
         txn_blocks_count_task
-        ] >> update_epoch_task
+    ] >> cleanup_task
