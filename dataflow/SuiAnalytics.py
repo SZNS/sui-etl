@@ -18,13 +18,13 @@ from apache_beam.error import TransformError
 from google.cloud import bigquery
 
 class UploadToBigQuery(DoFn):
-    def __init__(self, project_id, dataset_name, table_name):
-        self.project_id = project_id
+    def __init__(self, target_project, dataset_name, table_name):
+        self.target_project = target_project
         self.dataset_name = dataset_name
         self.table_name = table_name
 
     def process(self, element):
-        client = bigquery.Client(project=self.project_id)
+        client = bigquery.Client(project=self.target_project)
         job_config = bigquery.LoadJobConfig()
         job_config.source_format = bigquery.SourceFormat.CSV
         job_config.field_delimiter = "|"
@@ -47,7 +47,7 @@ class UploadToBigQuery(DoFn):
             raise
 
 
-def run(input_sub, project_id, dataset_name, table_name, window_size=1.0, pipeline_args=None):
+def run(input_sub, target_project, dataset_name, table_name, window_size=1.0, pipeline_args=None):
     # Set `save_main_session` to True so DoFns can access globally imported modules.
     pipeline_options = PipelineOptions(
         pipeline_args, streaming=True, save_main_session=True
@@ -72,7 +72,7 @@ def run(input_sub, project_id, dataset_name, table_name, window_size=1.0, pipeli
             | "Read from Pub/Sub" >> io.ReadFromPubSub(subscription=input_sub)
             | "Window into" >> WindowInto(FixedWindows(window_size * 60))
             | "Get new file names" >> Map(getFileFromMessage)
-            | "Write to BigQuery" >> ParDo(UploadToBigQuery(project_id, dataset_name, table_name))
+            | "Write to BigQuery" >> ParDo(UploadToBigQuery(target_project, dataset_name, table_name))
         )
 
 
@@ -84,11 +84,11 @@ if __name__ == "__main__":
     parser.add_argument(
         "--input_sub",
         help="The Cloud Pub/Sub subscription to read from."
-        '"projects/<PROJECT_ID>/subscriptions/<SUB_ID>".',
+        '"projects/<project_id>/subscriptions/<SUB_ID>".',
         required=True
     )
     parser.add_argument(
-        "--project_id",
+        "--target_project",
         help="Project ID where where BigQuery table exists",
         required=True
     )
@@ -116,7 +116,7 @@ if __name__ == "__main__":
 
     run(
         known_args.input_sub,
-        known_args.project_id,
+        known_args.target_project,
         known_args.dataset_name,
         known_args.table_name,
         known_args.window_size,
