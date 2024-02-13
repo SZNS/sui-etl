@@ -27,7 +27,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
     "start_date": datetime(year=2023, month=4, day=12, hour=14),
     # Set this to load to a particular day/epoch
-    "end_date": datetime(year=2024, month=2, day=8, hour=14)
+    # "end_date": datetime(year=2024, month=2, day=12, hour=11)
 }
 
 
@@ -90,6 +90,7 @@ with models.DAG(
         sql=get_sql_query('has_checkpoints'),
         pass_value=1,
         use_legacy_sql=False,
+        
         dag=dag
     )
 
