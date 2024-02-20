@@ -17,6 +17,7 @@ from apache_beam.error import TransformError
 
 from google.cloud import bigquery
 
+
 class UploadToBigQuery(DoFn):
     def __init__(self, target_project, dataset_name, table_name):
         self.target_project = target_project
@@ -38,7 +39,7 @@ class UploadToBigQuery(DoFn):
         try:
             logging.info('Loading in: {file}'.format(file=element))
             logging.info('Job metadata: ' +
-                        json.dumps(job_config.to_api_repr()))
+                         json.dumps(job_config.to_api_repr()))
             result = load_job.result()
             logging.info(result)
             assert load_job.errors is None or len(load_job.errors) == 0
@@ -65,7 +66,7 @@ def run(input_sub, target_project, dataset_name, table_name, window_size=1.0, pi
             file_path = f"gs://{bucket}/{name}"
 
             return file_path
-        
+
         # Pub/Sub
         (
             pipeline
@@ -83,8 +84,7 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--input_sub",
-        help="The Cloud Pub/Sub subscription to read from."
-        '"projects/<project_id>/subscriptions/<SUB_ID>".',
+        help="The Cloud Pub/Sub subscription to read from. In format "'"projects/<project_id>/subscriptions/<SUB_ID>".',
         required=True
     )
     parser.add_argument(
