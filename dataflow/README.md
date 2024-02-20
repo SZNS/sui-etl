@@ -2,8 +2,6 @@
 
 Stream analytic data with Google Dataflow via Apache Beam into BigQuery
 
----
-
 ## Overview
 
 This sets up a data pipeline that ingests analytic data exported in Google Cloud Storage (GCS) and streams the data into Google BigQuery. Pipeline jobs are triggered by PubSub notifications when new data is exporting into GCS bucket(s).
@@ -27,7 +25,16 @@ In GCS create a bucket and folder object (eg: gs://dataflow-jobs/temp/) for Data
 Ensure a BigQuery Table exists with the proper tables. Please visit [this folder](../scripts/sql/bq) to create the tables with the proper schemas.
 
 ### Create Pub/Sub topics and subscriptions
-
+This is done 7 times for each data type (checkpoints, events, move-call, move-package, objects, transaction-objects, transactions)
+1. [Enable the Pub/Sub API](https://cloud.google.com/storage/docs/reporting-changes#before-you-begin)
+2. Create a Pub/Sub topic and subscription for the particular data type
+   ```
+   gcloud pubsub topics create [TOPIC_ID]
+   gcloud pubsub subscriptions create [SUBSCRIPTION_ID]-sub --topic=[TOPIC_ID] --ack-deadline=180
+   ```
+   
+### Create Pub/Sub topics and subscriptions
+This is done 7 times for each data type (checkpoints, events, move-call, move-package, objects, transaction-objects, transactions)
 1. [Enable the Pub/Sub API](https://cloud.google.com/storage/docs/reporting-changes#before-you-begin)
 2. Create a Pub/Sub topic and subscription for the particular data type
    ```
@@ -35,10 +42,20 @@ Ensure a BigQuery Table exists with the proper tables. Please visit [this folder
    gcloud pubsub subscriptions create [SUBSCRIPTION_ID]-sub --topic=[TOPIC_ID] --ack-deadline=180
    ```
 
-## Deploy a dataflow job
+### Attach Pub/Sub topic for GCS updates
+From the bucket defined during the [analytics setup](https://github.com/SZNS/sui-node/blob/main/docs/analytics-indexer.md#create-google-cloud-storage-bucket) attach a Pub/Sub topic for each data type.
 
-Run the following commands to deploy a dataflow job for a particular pipeline.
+This is done 7 times for each data type (checkpoints, events, move-call, move-package, objects, transaction-objects, transactions)
+```bash
+gcloud storage buckets notifications create gs://[BUCKET_NAME] --topic=[TOPIC_NAME] --object-prefix=[PREFIX] --event-types=OBJECT_FINALIZE
+```
+|Variable|Description
+| ------ | ------
+|BUCKET_NAME|The bucket created during the [analytics setup](https://github.com/SZNS/sui-node/blob/main/docs/analytics-indexer.md#create-google-cloud-storage-bucket)
+TOPIC_NAME| The topic name create in the previous step
+|PREFIX| The folder in the GCS bucket. Valid values are [`checkpoints`, `events`, `move-call`, `move-package`, `objects`, `transaction-objects`, `transactions`]
 
+## Deploy a Dataflow job
 ```bash
 python SuiAnalytics.py --region=[REGION] --project=[PROJECT_ID] --runner=DataflowRunner \
 --service_account_email=[SERVICE_ACCOUNT_EMAIL] \
