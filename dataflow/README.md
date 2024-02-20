@@ -16,7 +16,7 @@ This document assumes the [GCP CLI](https://cloud.google.com/sdk/docs/install-sd
 
 ### Run an analytics node
 
-Follow this [this guide](https://github.com/SZNS/sui-node) to run a Sui analytisc node.
+Follow this [this guide](https://github.com/SZNS/sui-node/blob/main/docs/analytics-indexer.md) to run a Sui analytisc node.
 
 ### Create a temporary directory in GCS
 
