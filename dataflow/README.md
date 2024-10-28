@@ -80,3 +80,17 @@ python SuiAnalytics.py --region=[REGION] --project=[PROJECT_ID] --runner=Dataflo
 | MACHINE_TYPE          | The [machine type](https://cloud.google.com/compute/docs/machine-resource) for Dataflow workers                             | n1-standard-2                                                                                                                           |
 | MAX_WORKERS           | The maximum workers to scale up for a Dataflow pipeline                                                                     | 5, it tends to be costly and takes time to spin up/down workers. We suggest updating MACHINE_TYPE if the current latency is undesirable |
 | JOB_NAME              | A uniquer job name for the Dataflow pipeline                                                                                |                                                                                                                                         |
+
+## Considerations
+
+### Stopping a Dataflow job
+
+Please visit the following page to [stop a Dataflow pipeline](https://cloud.google.com/dataflow/docs/guides/stopping-a-pipeline).
+
+The recommended approach is to [drain mechanism](https://cloud.google.com/dataflow/docs/guides/stopping-a-pipeline#drain). This prevents any currently processing Pub/Sub messages from being dropped.
+
+### Updating a Dataflow job
+
+Please visit the following page to [update a Dataflow pipeline](https://cloud.google.com/dataflow/docs/guides/updating-a-pipeline).
+
+The recommended approach is to stop the current dataflow job and start a new one. This prevents race conditions or duplicate entries from Pub/Sub messages.

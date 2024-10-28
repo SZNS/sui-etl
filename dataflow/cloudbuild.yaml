@@ -1,0 +1,150 @@
+steps:
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template build "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+          --image-gcr-path "$_REGION-docker.pkg.dev/$_PROJECT_ID/$_ARTIFACT_REGISTRY_ID/sui-analytics:$TAG_NAME" \
+          --staging-location $_GCS_STAGING_LOCATION \
+          --sdk-language "PYTHON" \
+          --flex-template-base-image "PYTHON3" \
+          --metadata-file "metadata.json" \
+          --py-path "." \
+          --env "FLEX_TEMPLATE_PYTHON_PY_FILE=SuiAnalytics.py" \
+          --env "FLEX_TEMPLATE_PYTHON_REQUIREMENTS_FILE=requirements.txt"
+
+  # Run the Dataflow Flex Template - Checkpoints
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_CHECKPOINT \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_CHECKPOINT-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="CHECKPOINT",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+  # Run the Dataflow Flex Template - Events
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_EVENT \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_EVENT-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="EVENT",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+  # Run the Dataflow Flex Template - Move Package
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_MOVE_PACKAGE \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_MOVE_PACKAGE-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="MOVE_PACKAGE",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+  # Run the Dataflow Flex Template - Move Call
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_MOVE_CALL \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_MOVE_CALL-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="MOVE_CALL",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+  # Run the Dataflow Flex Template - Object
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_OBJECT \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_OBJECT-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="OBJECT",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+  # Run the Dataflow Flex Template - Transaction
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_TRANSACTION \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_TRANSACTION-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="TRANSACTION",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+  # Run the Dataflow Flex Template - Transaction Object
+  - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
+    entrypoint: "bash"
+    dir: "${_WORKING_DIR}"
+    args:
+      - "-c"
+      - |
+        gcloud dataflow flex-template run $_JOB_TRANSACTION_OBJECT \
+         --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_TRANSACTION_OBJECT-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="TRANSACTION_OBJECT",diskSizeGb=10 \
+         --region $_REGION \
+         --temp-location=$_GCS_TEMP_LOCATION \
+         --staging-location=$_GCS_STAGING_LOCATION \
+         --max-workers=5 \
+         --worker-machine-type="n1-standard-2" \
+         --update
+options:
+  logging: CLOUD_LOGGING_ONLY # Alternatively, set to NONE to disable logs
+substitutions:
+  _GCS_TEMPLATE_PATH: gs://BUILD_BUCKET_PATH
+  _REGION: REGION
+  _ARTIFACT_REGISTRY_ID: GCP_ARTIFACT_REGISTRY_ID
+  _GCS_TEMP_LOCATION: "gs://TEMP_BUCKET_PATH"
+  _GCS_STAGING_LOCATION: "gs://STAGING_BUCKET_PATH"
+  _PROJECT_ID: $PROJECT_ID
+  _WORKING_DIR: "dataflow"
+  _TARGET_DATASET_PROJECTID: PROJECT_ID
+  _TARGET_DATASET_NAME: DATASET_NAME
+  _JOB_CHECKPOINT: "mainnet-checkpoints"
+  _JOB_EVENT: "mainnet-events"
+  _JOB_MOVE_PACKAGE: "mainnet-move-package"
+  _JOB_MOVE_CALL: "mainnet-move-call"
+  _JOB_OBJECT: "mainnet-objects"
+  _JOB_TRANSACTION: "mainnet-transactions"
+  _JOB_TRANSACTION_OBJECT: "mainnet-transaction-objects"
+
+timeout: "1200s"
