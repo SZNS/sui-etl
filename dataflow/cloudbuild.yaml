@@ -56,7 +56,7 @@ steps:
       - |
         gcloud dataflow flex-template run $_JOB_MOVE_PACKAGE \
          --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
-         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_MOVE_PACKAGE-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="MOVE_PACKAGE",diskSizeGb=10 \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_MOVE_PACKAGE-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="MOVE_PACKAGE",diskSizeGb=10 \
          --region $_REGION \
          --temp-location=$_GCS_TEMP_LOCATION \
          --staging-location=$_GCS_STAGING_LOCATION \
@@ -72,7 +72,7 @@ steps:
       - |
         gcloud dataflow flex-template run $_JOB_MOVE_CALL \
          --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
-         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_MOVE_CALL-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="MOVE_CALL",diskSizeGb=10 \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_MOVE_CALL-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="MOVE_CALL",diskSizeGb=10 \
          --region $_REGION \
          --temp-location=$_GCS_TEMP_LOCATION \
          --staging-location=$_GCS_STAGING_LOCATION \
@@ -88,7 +88,7 @@ steps:
       - |
         gcloud dataflow flex-template run $_JOB_OBJECT \
          --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
-         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_OBJECT-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="OBJECT",diskSizeGb=10 \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_OBJECT-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="OBJECT",diskSizeGb=10 \
          --region $_REGION \
          --temp-location=$_GCS_TEMP_LOCATION \
          --staging-location=$_GCS_STAGING_LOCATION \
@@ -104,7 +104,7 @@ steps:
       - |
         gcloud dataflow flex-template run $_JOB_TRANSACTION \
          --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
-         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_TRANSACTION-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="TRANSACTION",diskSizeGb=10 \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_TRANSACTION-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="TRANSACTION",diskSizeGb=10 \
          --region $_REGION \
          --temp-location=$_GCS_TEMP_LOCATION \
          --staging-location=$_GCS_STAGING_LOCATION \
@@ -120,7 +120,7 @@ steps:
       - |
         gcloud dataflow flex-template run $_JOB_TRANSACTION_OBJECT \
          --template-file-gcs-location "$_GCS_TEMPLATE_PATH/sui-analytics-$TAG_NAME.json" \
-         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_TRANSACTION_OBJECT-test-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="TRANSACTION_OBJECT",diskSizeGb=10 \
+         --parameters input_sub="projects/sui-etl/subscriptions/$_JOB_TRANSACTION_OBJECT-sub",target_project=$_TARGET_DATASET_PROJECTID,dataset_name=$_TARGET_DATASET_NAME,table_name="TRANSACTION_OBJECT",diskSizeGb=10 \
          --region $_REGION \
          --temp-location=$_GCS_TEMP_LOCATION \
          --staging-location=$_GCS_STAGING_LOCATION \
