@@ -30,6 +30,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
   # Run the Dataflow Flex Template - Events
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -46,6 +47,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
   # Run the Dataflow Flex Template - Move Package
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -62,6 +64,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
   # Run the Dataflow Flex Template - Move Call
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -78,6 +81,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
   # Run the Dataflow Flex Template - Object
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -94,6 +98,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
   # Run the Dataflow Flex Template - Transaction
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -110,6 +115,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
   # Run the Dataflow Flex Template - Transaction Object
   - name: "gcr.io/google.com/cloudsdktool/cloud-sdk"
@@ -126,6 +132,7 @@ steps:
          --staging-location=$_GCS_STAGING_LOCATION \
          --max-workers=5 \
          --worker-machine-type="n1-standard-2" \
+         --service-account-email=$_SERVICE_ACCOUNT \
          --update
 options:
   logging: CLOUD_LOGGING_ONLY # Alternatively, set to NONE to disable logs
@@ -146,5 +153,6 @@ substitutions:
   _JOB_OBJECT: "mainnet-objects"
   _JOB_TRANSACTION: "mainnet-transactions"
   _JOB_TRANSACTION_OBJECT: "mainnet-transaction-objects"
+  _SERVICE_ACCOUNT: "SERVICE_ACCOUNT@email.com"
 
 timeout: "1200s"
