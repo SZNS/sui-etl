@@ -1,4 +1,4 @@
-CREATE TABLE IF NOT EXISTS chaindata.MOVE_PACKAGE
+CREATE TABLE IF NOT EXISTS crypto_sui_mainnet.MOVE_PACKAGE
 (
     package_id         STRING        NOT NULL,
     checkpoint         INT64         NOT NULL,

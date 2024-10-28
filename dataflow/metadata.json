@@ -1,0 +1,32 @@
+{
+  "name": "Sui Analytics",
+  "description": "A flex template for Sui Dataflow jobs.",
+  "streaming": true,
+  "parameters": [
+    {
+      "name": "input_sub",
+      "label": "Subscription ID",
+      "helpText": "The pub/sub subscription ID to read from"
+    },
+    {
+      "name": "target_project",
+      "label": "GCP Project ID",
+      "helpText": "The target GCP project ID to write to BigQuery"
+    },
+    {
+      "name": "dataset_name",
+      "label": "BigQuery Dataset Name",
+      "helpText": "The BigQuery dataset name to write to"
+    },
+    {
+      "name": "table_name",
+      "label": "BigQuery Table Name",
+      "helpText": "The BigQuery table name to write to"
+    },
+    {
+      "name": "diskSizeGb",
+      "label": "Worker disk size in GB",
+      "helpText": "The disk size for Dataflow workers"
+    }
+  ]
+}

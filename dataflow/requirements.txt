@@ -1,4 +1,4 @@
-apache-beam[gcp,test]==2.53.0
-google-api-core==2.14.0
+apache-beam[gcp,test]==2.60.0
+google-api-core>=2.15.0
 google-cloud-bigquery==3.13.0
-google-cloud-storage==2.13.0 
+google-cloud-storage==2.18.2 
