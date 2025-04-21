@@ -3,14 +3,7 @@ import argparse
 import logging
 import json
 
-from apache_beam import (
-    DoFn,
-    io,
-    ParDo,
-    Pipeline,
-    WindowInto,
-    Map
-)
+from apache_beam import DoFn, io, ParDo, Pipeline, WindowInto, Map
 from apache_beam.options.pipeline_options import PipelineOptions
 from apache_beam.transforms.window import FixedWindows
 from apache_beam.error import TransformError
@@ -31,15 +24,14 @@ class UploadToBigQuery(DoFn):
         job_config.field_delimiter = "|"
         job_config.write_disposition = bigquery.WriteDisposition.WRITE_APPEND
         job_config.allow_quoted_newlines = True
+        job_config.ignore_unknown_values = True
 
         table_ref = client.dataset(self.dataset_name).table(self.table_name)
-        load_job = client.load_table_from_uri(
-            element, table_ref, job_config=job_config)
+        load_job = client.load_table_from_uri(element, table_ref, job_config=job_config)
 
         try:
-            logging.info('Loading in: {file}'.format(file=element))
-            logging.info('Job metadata: ' +
-                         json.dumps(job_config.to_api_repr()))
+            logging.info("Loading in: {file}".format(file=element))
+            logging.info("Job metadata: " + json.dumps(job_config.to_api_repr()))
             result = load_job.result()
             logging.info(result)
             assert load_job.errors is None or len(load_job.errors) == 0
@@ -48,7 +40,14 @@ class UploadToBigQuery(DoFn):
             raise
 
 
-def run(input_sub, target_project, dataset_name, table_name, window_size=1.0, pipeline_args=None):
+def run(
+    input_sub,
+    target_project,
+    dataset_name,
+    table_name,
+    window_size=1.0,
+    pipeline_args=None,
+):
     # Set `save_main_session` to True so DoFns can access globally imported modules.
     pipeline_options = PipelineOptions(
         pipeline_args, streaming=True, save_main_session=True
@@ -60,8 +59,8 @@ def run(input_sub, target_project, dataset_name, table_name, window_size=1.0, pi
             message_body_object = json.loads(message)
 
             # The id field contains the full path
-            bucket = message_body_object['bucket']
-            name = message_body_object['name']
+            bucket = message_body_object["bucket"]
+            name = message_body_object["name"]
 
             file_path = f"gs://{bucket}/{name}"
 
@@ -73,7 +72,8 @@ def run(input_sub, target_project, dataset_name, table_name, window_size=1.0, pi
             | "Read from Pub/Sub" >> io.ReadFromPubSub(subscription=input_sub)
             | "Window into" >> WindowInto(FixedWindows(window_size * 60))
             | "Get new file names" >> Map(getFileFromMessage)
-            | "Write to BigQuery" >> ParDo(UploadToBigQuery(target_project, dataset_name, table_name))
+            | "Write to BigQuery"
+            >> ParDo(UploadToBigQuery(target_project, dataset_name, table_name))
         )
 
 
@@ -84,25 +84,24 @@ if __name__ == "__main__":
 
     parser.add_argument(
         "--input_sub",
-        help="The Cloud Pub/Sub subscription to read from. In format "'"projects/<project_id>/subscriptions/<SUB_ID>".',
-        required=True
+        help="The Cloud Pub/Sub subscription to read from. In format "
+        '"projects/<project_id>/subscriptions/<SUB_ID>".',
+        required=True,
     )
     parser.add_argument(
         "--target_project",
         help="Project ID where where BigQuery table exists",
-        required=True
+        required=True,
     )
 
     parser.add_argument(
         "--dataset_name",
         help="Dataset name where where BigQuery table exists",
-        required=True
+        required=True,
     )
 
     parser.add_argument(
-        "--table_name",
-        help="The BigQuery table to export data",
-        required=True
+        "--table_name", help="The BigQuery table to export data", required=True
     )
 
     parser.add_argument(
